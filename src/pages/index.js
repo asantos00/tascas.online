@@ -1,21 +1,62 @@
 import React from "react"
-import { Link } from "gatsby"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
+import Map from "../components/map"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" keywords={[`gatsby`, `application`, `react`]} />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
-)
+import styles from './styles.module.css';
+
+class IndexPage extends React.Component {
+  state = {
+    place: undefined
+  }
+
+  selectPlace = (place) => {
+    this.setState({ place });
+  }
+
+  render() {
+    const { data }  = this.props;
+    const { place } = this.state;
+
+    return (
+      <Layout>
+        <SEO title="Home" keywords={[`food`, `eat`, `restaurants`, `typical`, `portugal`]} />
+        <div className={styles.wrapper}>
+          <div className={styles.map}>
+            <Map places={data.allTascasJson.edges} onSelectPlace={this.selectPlace} />
+          </div>
+          { place && (
+            <div className={styles.sidebar}>
+              <img src={place.image[0]} />
+              <div className={styles.body}>
+                <h3>{place.title}</h3>
+                {place.description.map(d => <h6>{d}</h6>)}
+              </div>
+            </div>
+          )}
+        </div>
+      </Layout>
+    )
+  }
+}
+
+export const query = graphql`
+{
+  allTascasJson {
+    edges {
+      node {
+        title
+        description
+        coordinates {
+          lat
+          lng
+        }
+        image
+      }
+    }
+  }
+}
+`
 
 export default IndexPage
