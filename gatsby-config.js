@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `Encontrar a tasca`,
+    title: `tascas.online`,
     description: `O melhor sitio para encontrar a tradicional tasca, bom e barato. À antiga`,
     author: `@asantos00`,
   },

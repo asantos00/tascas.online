@@ -28,7 +28,7 @@ const Layout = ({ children }) => (
             display: 'flex',
             position: 'absolute',
             width: '100%',
-            height: 'calc(100% - 100px)'
+            height: 'calc(100% - 60px)'
           }}>{children}</main>
           <footer>
           </footer>
