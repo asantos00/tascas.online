@@ -6,6 +6,11 @@ import Marker from './marker';
 
 const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiYXNhbnRvczAwIiwiYSI6ImNpZnhxeDZkdTAyOHF0MG03Z2xndnM1ZDkifQ.qmxaAFvrBNvNSmOr5y9xpw'
 
+const DEFAULT_LOCATION = {
+  latitude: 38.7223,
+  longitude: -9.1393
+}
+
 class Map extends React.Component {
   static propTypes = {
     places: PropTypes.arrayOf(PropTypes.shape({
@@ -20,8 +25,7 @@ class Map extends React.Component {
 
   state = {
     viewport: {
-      latitude: 38.7223,
-      longitude: -9.1393,
+      ...DEFAULT_LOCATION,
       zoom: 13,
       transitionDuration: 300,
       transitionInterpolator: new FlyToInterpolator(),
@@ -29,19 +33,44 @@ class Map extends React.Component {
     open: undefined,
   }
 
+  componentDidUpdate(prevProps) {
+    const { latitude, longitude } = this.props;
+
+    if (!latitude || !longitude) {
+      return;
+    }
+
+    if (prevProps.latitude !== latitude || prevProps.longitude !== longitude) {
+      this.updateViewport(latitude, longitude);
+    }
+  }
+
+  updateViewport = (latitude, longitude) => {
+    this.setState(({viewport}) => ({
+      viewport: {
+        ...viewport,
+        latitude,
+        longitude,
+        zoom: 14,
+        transitionDuration: 300,
+        transitionInterpolator: new FlyToInterpolator(),
+      }
+    }))
+  }
+
   onMarkerClick = (place) => {
     const { onSelectPlace } = this.props;
     const { coordinates: { lat, lng } }  = place
 
     onSelectPlace(place)
+    this.updateViewport(lat, lng);
+  }
 
-    this.setState(({viewport}) => ({
-      viewport: {
-        ...viewport,
-        latitude: lat,
-        longitude: lng
-      }
-    }))
+  onMarkerOutsideClick = () => {
+    const { onSelectPlace } = this.props;
+    this.setState({ open: undefined });
+
+    onSelectPlace()
   }
 
   render() {
@@ -59,7 +88,7 @@ class Map extends React.Component {
         {places.map(({node : place }) => (
           <Marker
             isOpen={open === place.title}
-            onOutsideClick={() => this.setState({ open: undefined })}
+            onOutsideClick={this.onMarkerOutsideClick}
             onClick={() => this.onMarkerClick(place)}
             key={`${place.coordinates.lat}${place.coordinates.lng}`}
             latitude={place.coordinates.lat}

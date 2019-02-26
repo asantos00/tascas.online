@@ -16,10 +16,10 @@ const Header = ({ siteTitle }) => (
         padding: '8px',
         display: 'flex',
         alignItems: 'center',
-
+        justifyContent: 'center'
       }}
     >
-      <h1 style={{ margin: 0 }}>
+      <h3 style={{ margin: 0 }}>
         <Link
           to="/"
           style={{
@@ -29,7 +29,7 @@ const Header = ({ siteTitle }) => (
         >
           {siteTitle}
         </Link>
-      </h1>
+      </h3>
     </div>
   </header>
 )

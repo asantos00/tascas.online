@@ -13,7 +13,7 @@ export default class CustomMarker extends BaseControl {
 
     const markerStyle = {
       position: 'absolute',
-      width: '200px',
+      width: '24px',
       left: x,
       top: y,
       zIndex: isOpen ? 9999 : 0,
