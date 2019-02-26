@@ -19,14 +19,9 @@ class IndexPage extends React.Component {
 
   getRandomPlaces = (numberOfPlaces) => {
     const { data } = this.props;
+    const randomIndex = this.getRandomIndex()
 
-    return data.allTascasJson.edges.reduce((acc, place) => {
-      if (acc.length < numberOfPlaces) {
-        return acc.concat(place)
-      }
-
-      return acc;
-    }, [])
+    return data.allTascasJson.edges.slice(randomIndex, randomIndex + 3)
   }
 
   render() {
