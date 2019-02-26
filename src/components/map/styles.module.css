@@ -1,0 +1,20 @@
+.marker {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 0;
+}
+
+.content{
+    padding: 16px;
+    overflow-y: scroll;
+}
+
+.title {
+    transform: translate3d(-50%, 0, 0);
+    text-align: center;
+    padding: 8px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 2px 1px 6px rgba(0,0,0,0.4);
+    margin-bottom: 0;
+}
